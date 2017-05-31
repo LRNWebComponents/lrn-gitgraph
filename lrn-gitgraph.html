@@ -1,0 +1,34 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`lrn-gitgraph`
+A LRN element
+
+@demo demo/index.html
+-->
+
+<dom-module id="lrn-gitgraph">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>[[title]]</h2>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'lrn-gitgraph',
+
+      properties: {
+        title: {
+          type: String,
+          value: 'lrn-gitgraph',
+        },
+      },
+
+    });
+  </script>
+</dom-module>
