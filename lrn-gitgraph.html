@@ -1,4 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
+<script src="./libraries/gitgraph.js/src/gitgraph.js"></script>
+<link rel="stylesheet" type="text/css" href="./libraries/gitgraph.js/src/gitgraph.css" />
 
 <!--
 `lrn-gitgraph`
@@ -12,23 +14,84 @@ A LRN element
     <style>
       :host {
         display: block;
+        overflow-x: scroll;
       }
     </style>
-    <h2>[[title]]</h2>
+    <canvas id="gitGraph"></canvas>
   </template>
-
   <script>
     Polymer({
 
       is: 'lrn-gitgraph',
 
       properties: {
-        title: {
+        template: {
           type: String,
-          value: 'lrn-gitgraph',
+          value: 'blackarrow',
         },
+        orientation: {
+          type: String,
+          value: 'horizontal'
+        },
+        mode: {
+          type: String,
+          value: ''
+        },
+        reverseArrow: {
+          type: Boolean,
+          value: false,
+        }
       },
-
+      ready: function() {
+        var root = this;
+        /***********************
+         *    INITIALIZATION   *
+         ***********************/
+        var config = {
+          template: root.template, // could be: "blackarrow" or "metro" or `myTemplate` (custom Template object)
+          reverseArrow: false, // to make arrows point to ancestors, if displayed
+          orientation: root.orientation,
+          element: root.$$('#gitGraph'),
+          mode: root.mode // special compact mode: hide messages & compact graph
+        };
+        if (root.mode !== '') {
+          config.mode = root.mode;
+        }
+        var gitGraph = new GitGraph(config);
+        var master = gitGraph.branch("master");
+        master.commit('Inital Commit');
+        master.commit();
+        master.commit();
+        master.commit();
+        master.commit();
+        master.commit();
+        var develop = gitGraph.branch('master');
+        develop.commit();
+        develop.commit();
+        develop.commit();
+        master.commit();
+        develop.merge(master);
+        var summer2017 = gitGraph.branch('master');
+        summer2017.commit();
+        summer2017.commit();
+        summer2017.commit();
+        summer2017.commit();
+        summer2017.commit();
+        summer2017.commit();
+        summer2017.commit();
+        master.commit();
+        master.merge(summer2017);
+        summer2017.commit();
+        summer2017.commit();
+        summer2017.commit();
+        summer2017.commit();
+        summer2017.merge(master);
+        var fall2018 = gitGraph.branch('master');
+        fall2018.commit();
+        fall2018.commit();
+        fall2018.commit();
+        fall2018.commit();
+      }
     });
   </script>
 </dom-module>
