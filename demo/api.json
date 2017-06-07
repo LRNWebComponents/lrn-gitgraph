@@ -3,27 +3,38 @@
   "data": [
     {
       "refs": "",
-      "commit": "a817aa484b1f1e82d8db4dfef2fb4de3af10aefe",
-      "tree": "afc570fde833e08f392604491462500ef8e8879a",
-      "parent": ""
+      "commit": "a817aa4",
+      "tree": "afc570f",
+      "parent": "",
+      "subject": "Initial commit of lrn-gitgraph element"
     },
     {
-      "refs": " (HEAD -> master, origin/master)",
-      "commit": "10a469aa8c990b756c90410223d8f4cb1d524947",
-      "tree": "d7bec20b7ab10a60c500a567fa4d20ac828778c3",
-      "parent": "a817aa484b1f1e82d8db4dfef2fb4de3af10aefe"
+      "refs": " (origin/master, master)",
+      "commit": "10a469a",
+      "tree": "d7bec20",
+      "parent": "a817aa4",
+      "subject": "Added a forked version of gitgraph.js.  Added demo."
     },
     {
       "refs": " (origin/gh-pages)",
-      "commit": "43ccb27423254836df8963eb1e456589baf9fb05",
-      "tree": "ee7f1e3a26c30b2c4c9867655985cd10c7bb496e",
-      "parent": ""
+      "commit": "43ccb27",
+      "tree": "ee7f1e3",
+      "parent": "",
+      "subject": "seed gh-pages"
     },
     {
-      "refs": " (test)",
-      "commit": "f21d4c899f3dd0f871c91e277ccab9ec2511b965",
-      "tree": "352fbc0f64ac12e7c8b114bbb3e6ed37e26de139",
-      "parent": "10a469aa8c990b756c90410223d8f4cb1d524947"
+      "refs": "",
+      "commit": "f21d4c8",
+      "tree": "352fbc0",
+      "parent": "10a469a",
+      "subject": "Added test file."
+    },
+    {
+      "refs": " (HEAD -> test)",
+      "commit": "3a7249c",
+      "tree": "e46738c",
+      "parent": "f21d4c8",
+      "subject": "trying new gitgraph method."
     }
   ]
 }

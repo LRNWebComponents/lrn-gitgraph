@@ -68,16 +68,38 @@ A LRN element
       ],
       _commitsChanged: function(commits) {
         var root = this;
-        var previousTree = null;
         if (this.config) {
           if (commits.length > 0) {
+            var gitgraph = new GitGraph(root.config);
             commits.forEach(function(commit) {
-              console.log(commit.tree);
-              var gitgraph = new GitGraph(root);
-              if (typeof commit.tree !== 'undefined') {
-                var tree = commit.tree;
-                var branch = gitgraph.branch(tree);
-                // console.log(branch);
+              var commitObj = {
+                message: commit.subject,
+                sha1: commit.commit
+              };
+              // if this is the first commit create the master branch
+              if (gitgraph.commits < 1) {
+                var master = gitgraph.branch('master');
+                master.commit(commitObj);
+              }
+              else {
+                // if there is no parent then we need to create a new branch
+                if (commit.parent === '') {
+                  var newBranch = gitgraph.branch(commit.commit);
+                  newBranch.commit(commitObj);
+                }
+                else {
+                  gitgraph.branches.forEach(function(branch) {
+                    var latestCommit = branch.commits.pop();
+                    if (latestCommit) {
+                      var latestCommitParent = latestCommit.sha1;
+                      if (latestCommitParent === commit.parent) {
+                        var branchName = branch.name;
+                        branch.commit(commitObj);
+                      }
+                    }
+                    // console.log(latestCommit);
+                  }, this);
+                }
               }
             }, this);
           }
