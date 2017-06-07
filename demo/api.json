@@ -1,5 +1,29 @@
 {
   "status": 200,
-  "data": {
-  }
+  "data": [
+    {
+      "refs": "",
+      "commit": "a817aa484b1f1e82d8db4dfef2fb4de3af10aefe",
+      "tree": "afc570fde833e08f392604491462500ef8e8879a",
+      "parent": ""
+    },
+    {
+      "refs": " (HEAD -> master, origin/master)",
+      "commit": "10a469aa8c990b756c90410223d8f4cb1d524947",
+      "tree": "d7bec20b7ab10a60c500a567fa4d20ac828778c3",
+      "parent": "a817aa484b1f1e82d8db4dfef2fb4de3af10aefe"
+    },
+    {
+      "refs": " (origin/gh-pages)",
+      "commit": "43ccb27423254836df8963eb1e456589baf9fb05",
+      "tree": "ee7f1e3a26c30b2c4c9867655985cd10c7bb496e",
+      "parent": ""
+    },
+    {
+      "refs": " (test)",
+      "commit": "f21d4c899f3dd0f871c91e277ccab9ec2511b965",
+      "tree": "352fbc0f64ac12e7c8b114bbb3e6ed37e26de139",
+      "parent": "10a469aa8c990b756c90410223d8f4cb1d524947"
+    }
+  ]
 }
