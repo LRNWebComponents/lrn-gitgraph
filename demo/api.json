@@ -9,18 +9,11 @@
       "subject": "Initial commit of lrn-gitgraph element"
     },
     {
-      "refs": " (origin/master, master)",
+      "refs": " (origin/master)",
       "commit": "10a469a",
       "tree": "d7bec20",
       "parent": "a817aa4",
       "subject": "Added a forked version of gitgraph.js.  Added demo."
-    },
-    {
-      "refs": " (origin/gh-pages)",
-      "commit": "43ccb27",
-      "tree": "ee7f1e3",
-      "parent": "",
-      "subject": "seed gh-pages"
     },
     {
       "refs": "",
@@ -30,11 +23,39 @@
       "subject": "Added test file."
     },
     {
-      "refs": " (HEAD -> test)",
+      "refs": "",
       "commit": "3a7249c",
       "tree": "e46738c",
       "parent": "f21d4c8",
       "subject": "trying new gitgraph method."
+    },
+    {
+      "refs": " (HEAD -> test)",
+      "commit": "bf7f96d",
+      "tree": "3e6fcc8",
+      "parent": "3a7249c",
+      "subject": "started logic for create branches."
+    },
+    {
+      "refs": "",
+      "commit": "9154018",
+      "tree": "006099f",
+      "parent": "10a469a",
+      "subject": "added test file"
+    },
+    {
+      "refs": "",
+      "commit": "cf9ec53",
+      "tree": "3e6fcc8",
+      "parent": "bf7f96d",
+      "subject": "index on test: bf7f96d started logic for create branches."
+    },
+    {
+      "refs": " (master)",
+      "commit": "5371531",
+      "tree": "818354e",
+      "parent": "9154018",
+      "subject": "Added extra test file."
     }
   ]
 }

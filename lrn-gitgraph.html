@@ -66,44 +66,60 @@ A LRN element
       observers: [
         '_commitsChanged(commits)'
       ],
-      _commitsChanged: function(commits) {
+      _commitsChanged: function(logcommits) {
         var root = this;
         if (this.config) {
-          if (commits.length > 0) {
+          if (logcommits.length > 0) {
             var gitgraph = new GitGraph(root.config);
-            commits.forEach(function(commit) {
+            logcommits.forEach(function(logcommit, i) {
               var commitObj = {
-                message: commit.subject,
-                sha1: commit.commit
+                message: logcommit.subject,
+                sha1: logcommit.commit,
+                tag: logcommit.refs
               };
               // if this is the first commit create the master branch
-              if (gitgraph.commits < 1) {
+              if (i === 0) {
                 var master = gitgraph.branch('master');
                 master.commit(commitObj);
               }
               else {
-                // if there is no parent then we need to create a new branch
-                if (commit.parent === '') {
-                  var newBranch = gitgraph.branch(commit.commit);
-                  newBranch.commit(commitObj);
-                }
-                else {
-                  gitgraph.branches.forEach(function(branch) {
-                    var latestCommit = branch.commits.pop();
-                    if (latestCommit) {
-                      var latestCommitParent = latestCommit.sha1;
-                      if (latestCommitParent === commit.parent) {
-                        var branchName = branch.name;
-                        branch.commit(commitObj);
-                      }
-                    }
-                    // console.log(latestCommit);
-                  }, this);
+                if (logcommit.parent !== '') {
+                  // now we know we have a parent
+                  var commitsSnapshot = gitgraph.commits;
+                  var parentCommit = root._getCommit(logcommit.parent, commitsSnapshot);
+                  var branch = parentCommit.branch;
+                  var hasChild = root._commitHasChild(logcommit.parent, commitsSnapshot);
+                  if (hasChild) {
+                    var newbranch = branch.branch(logcommit.commit);
+                    newbranch.commit(commitObj);
+                  }
+                  else {
+                    branch.commit(commitObj);
+                  }
                 }
               }
-            }, this);
+            });
           }
         }
+      },
+      _getCommit: function(commitId, commits) {
+        var commit = false;
+        commits.forEach(function(c) {
+          if (c.sha1 === commitId) {
+            commit = c;
+          }
+        });
+        return commit;
+      },
+      _commitHasChild: function(commitId, commits) {
+        var hasChild = false;
+        var length = commits.length;
+        commits.forEach(function(c, i) {
+          if (i < length) {
+            console.log(c);
+          }
+        });
+        return hasChild;
       },
       ready: function() {
         var root = this;
@@ -114,12 +130,11 @@ A LRN element
           template: root.template, // could be: "blackarrow" or "metro" or `myTemplate` (custom Template object)
           reverseArrow: false, // to make arrows point to ancestors, if displayed
           orientation: root.orientation,
-          element: root.$$('#gitGraph'),
-          mode: root.mode // special compact mode: hide messages & compact graph
+          element: root.$$('#gitGraph')
         };
-        if (root.mode !== '') {
-          config.mode = root.mode;
-        }
+        // if (root.mode !== '') {
+        //   config.mode = root.mode;
+        // }
         root.config = config;
       }
     });
