@@ -116,7 +116,11 @@ A LRN element
         var length = commits.length;
         commits.forEach(function(c, i) {
           if (i < length) {
-            console.log(c);
+            if (c.parentCommit) {
+              if (c.parentCommit.sha1 === commitId) {
+                hasChild = true;
+              }
+            }
           }
         });
         return hasChild;
