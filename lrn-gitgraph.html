@@ -112,7 +112,6 @@ A LRN element
         var hasChild = false;
         var track = [];
         commits.forEach(function(c, i) {
-<<<<<<< HEAD
           track[c.parent] = 0;
         });
         commits.forEach(function(c, i) {
@@ -121,14 +120,6 @@ A LRN element
         commits.forEach(function(c, i) {
           if (c.parent === commitId && track[c.parent] > 1) {
             hasChild = true;
-=======
-          if (i < length) {
-            if (c.parentCommit) {
-              if (c.parentCommit.sha1 === commitId) {
-                hasChild = true;
-              }
-            }
->>>>>>> origin/master
           }
         });
         return hasChild;
