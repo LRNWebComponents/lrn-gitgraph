@@ -19,7 +19,6 @@ A LRN element
       }
     </style>
     <canvas id="gitGraph"></canvas>
-    
     <iron-ajax
        auto
        url="/demo/api.json"
@@ -68,7 +67,7 @@ A LRN element
       ],
       _commitsChanged: function(logcommits) {
         var root = this;
-        if (this.config) {
+        if (root.config) {
           if (logcommits.length > 0) {
             var gitgraph = new GitGraph(root.config);
             logcommits.forEach(function(logcommit, i) {
@@ -84,11 +83,9 @@ A LRN element
               }
               else {
                 if (logcommit.parent !== '') {
-                  // now we know we have a parent
-                  var commitsSnapshot = gitgraph.commits;
-                  var parentCommit = root._getCommit(logcommit.parent, commitsSnapshot);
+                  var parentCommit = root._getCommit(logcommit.parent, gitgraph.commits);
                   var branch = parentCommit.branch;
-                  var hasChild = root._commitHasChild(logcommit.parent, commitsSnapshot);
+                  var hasChild = root._commitHasChild(logcommit.parent, logcommits);
                   if (hasChild) {
                     var newbranch = branch.branch(logcommit.commit);
                     newbranch.commit(commitObj);
@@ -113,10 +110,16 @@ A LRN element
       },
       _commitHasChild: function(commitId, commits) {
         var hasChild = false;
-        var length = commits.length;
+        var track = [];
         commits.forEach(function(c, i) {
-          if (i < length) {
-            console.log(c);
+          track[c.parent] = 0;
+        });
+        commits.forEach(function(c, i) {
+          track[c.parent]++;
+        });
+        commits.forEach(function(c, i) {
+          if (c.parent === commitId && track[c.parent] > 1) {
+            hasChild = true;
           }
         });
         return hasChild;
