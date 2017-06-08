@@ -1,6 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
 <script src="./libraries/gitgraph.js/src/gitgraph.js"></script>
 <link rel="stylesheet" type="text/css" href="./libraries/gitgraph.js/src/gitgraph.css" />
+<link rel="import" href="../iron-ajax/iron-ajax.html">
 
 <!--
 `lrn-gitgraph`
@@ -18,6 +19,12 @@ A LRN element
       }
     </style>
     <canvas id="gitGraph"></canvas>
+    
+    <iron-ajax
+       auto
+       url="/demo/api.json"
+       handle-as="json"
+       on-response="handleResponse"></iron-ajax>
   </template>
   <script>
     Polymer({
@@ -40,7 +47,79 @@ A LRN element
         reverseArrow: {
           type: Boolean,
           value: false,
+        },
+        commits: {
+          type: Array,
+          value: []
+        },
+        config: {
+          type: Object
         }
+      },
+      handleResponse: function(res) {
+        var root = this;
+        var response = res.detail.response.data;
+        if (response) {
+          root.commits = response;
+        }
+      },
+      observers: [
+        '_commitsChanged(commits)'
+      ],
+      _commitsChanged: function(logcommits) {
+        var root = this;
+        if (this.config) {
+          if (logcommits.length > 0) {
+            var gitgraph = new GitGraph(root.config);
+            logcommits.forEach(function(logcommit, i) {
+              var commitObj = {
+                message: logcommit.subject,
+                sha1: logcommit.commit,
+                tag: logcommit.refs
+              };
+              // if this is the first commit create the master branch
+              if (i === 0) {
+                var master = gitgraph.branch('master');
+                master.commit(commitObj);
+              }
+              else {
+                if (logcommit.parent !== '') {
+                  // now we know we have a parent
+                  var commitsSnapshot = gitgraph.commits;
+                  var parentCommit = root._getCommit(logcommit.parent, commitsSnapshot);
+                  var branch = parentCommit.branch;
+                  var hasChild = root._commitHasChild(logcommit.parent, commitsSnapshot);
+                  if (hasChild) {
+                    var newbranch = branch.branch(logcommit.commit);
+                    newbranch.commit(commitObj);
+                  }
+                  else {
+                    branch.commit(commitObj);
+                  }
+                }
+              }
+            });
+          }
+        }
+      },
+      _getCommit: function(commitId, commits) {
+        var commit = false;
+        commits.forEach(function(c) {
+          if (c.sha1 === commitId) {
+            commit = c;
+          }
+        });
+        return commit;
+      },
+      _commitHasChild: function(commitId, commits) {
+        var hasChild = false;
+        var length = commits.length;
+        commits.forEach(function(c, i) {
+          if (i < length) {
+            console.log(c);
+          }
+        });
+        return hasChild;
       },
       ready: function() {
         var root = this;
@@ -51,46 +130,12 @@ A LRN element
           template: root.template, // could be: "blackarrow" or "metro" or `myTemplate` (custom Template object)
           reverseArrow: false, // to make arrows point to ancestors, if displayed
           orientation: root.orientation,
-          element: root.$$('#gitGraph'),
-          mode: root.mode // special compact mode: hide messages & compact graph
+          element: root.$$('#gitGraph')
         };
-        if (root.mode !== '') {
-          config.mode = root.mode;
-        }
-        var gitGraph = new GitGraph(config);
-        var master = gitGraph.branch("master");
-        master.commit('Inital Commit');
-        master.commit();
-        master.commit();
-        master.commit();
-        master.commit();
-        master.commit();
-        var develop = gitGraph.branch('master');
-        develop.commit();
-        develop.commit();
-        develop.commit();
-        master.commit();
-        develop.merge(master);
-        var summer2017 = gitGraph.branch('master');
-        summer2017.commit();
-        summer2017.commit();
-        summer2017.commit();
-        summer2017.commit();
-        summer2017.commit();
-        summer2017.commit();
-        summer2017.commit();
-        master.commit();
-        master.merge(summer2017);
-        summer2017.commit();
-        summer2017.commit();
-        summer2017.commit();
-        summer2017.commit();
-        summer2017.merge(master);
-        var fall2018 = gitGraph.branch('master');
-        fall2018.commit();
-        fall2018.commit();
-        fall2018.commit();
-        fall2018.commit();
+        // if (root.mode !== '') {
+        //   config.mode = root.mode;
+        // }
+        root.config = config;
       }
     });
   </script>
