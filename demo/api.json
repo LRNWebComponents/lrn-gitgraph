@@ -15,10 +15,11 @@
 {"refs": "", "commit": "8b80eb8", "tree": "2f2ac5c", "parent": "91a04c2", "subject": "license update", "date": "Thu Jun 8 15:43:29 2017 -0400", "author": "btopro btopro@outlook.com"},
 {"refs": "", "commit": "ca3fc41", "tree": "5166fee", "parent": "8b80eb8", "subject": "ALMOST THERE", "date": "Thu Jun 8 15:43:33 2017 -0400", "author": "btopro btopro@outlook.com"},
 {"refs": "", "commit": "3d460b7", "tree": "8a2b148", "parent": "ca3fc41 c0c97f2", "subject": "updated", "date": "Thu Jun 8 15:44:01 2017 -0400", "author": "btopro btopro@outlook.com"},
-{"refs": " (origin/master)", "commit": "d16661a", "tree": "5166fee", "parent": "3d460b7", "subject": "almost there", "date": "Thu Jun 8 15:44:27 2017 -0400", "author": "btopro btopro@outlook.com"},
+{"refs": "", "commit": "d16661a", "tree": "5166fee", "parent": "3d460b7", "subject": "almost there", "date": "Thu Jun 8 15:44:27 2017 -0400", "author": "btopro btopro@outlook.com"},
 {"refs": "", "commit": "4963a91", "tree": "8ba28f7", "parent": "d16661a", "subject": "getting somewhere", "date": "Tue Jun 13 11:21:10 2017 -0400", "author": "heyMP mgp140@gmail.com"},
 {"refs": "", "commit": "41776ef", "tree": "dda3209", "parent": "4963a91", "subject": "closer...", "date": "Tue Jun 13 11:46:16 2017 -0400", "author": "heyMP mgp140@gmail.com"},
-{"refs": " (HEAD -> master)", "commit": "f9cfd6c", "tree": "e7cbf96", "parent": "41776ef", "subject": "Updating demo json", "date": "Tue Jun 13 11:47:22 2017 -0400", "author": "heyMP mgp140@gmail.com"}
+{"refs": "", "commit": "f9cfd6c", "tree": "e7cbf96", "parent": "41776ef", "subject": "Updating demo json", "date": "Tue Jun 13 11:47:22 2017 -0400", "author": "heyMP mgp140@gmail.com"},
+{"refs": " (HEAD -> master, origin/master)", "commit": "cb87e79", "tree": "dc13478", "parent": "f9cfd6c", "subject": "added docs", "date": "Tue Jun 13 13:13:23 2017 -0400", "author": "heyMP mgp140@gmail.com"}
     ]
   },
   {
@@ -37,7 +38,7 @@
 {"refs": "", "commit": "8b80eb8", "tree": "2f2ac5c", "parent": "91a04c2", "subject": "license update", "date": "Thu Jun 8 15:43:29 2017 -0400", "author": "btopro btopro@outlook.com"},
 {"refs": "", "commit": "ca3fc41", "tree": "5166fee", "parent": "8b80eb8", "subject": "ALMOST THERE", "date": "Thu Jun 8 15:43:33 2017 -0400", "author": "btopro btopro@outlook.com"},
 {"refs": "", "commit": "3d460b7", "tree": "8a2b148", "parent": "ca3fc41 c0c97f2", "subject": "updated", "date": "Thu Jun 8 15:44:01 2017 -0400", "author": "btopro btopro@outlook.com"},
-{"refs": " (origin/master)", "commit": "d16661a", "tree": "5166fee", "parent": "3d460b7", "subject": "almost there", "date": "Thu Jun 8 15:44:27 2017 -0400", "author": "btopro btopro@outlook.com"},
+{"refs": "", "commit": "d16661a", "tree": "5166fee", "parent": "3d460b7", "subject": "almost there", "date": "Thu Jun 8 15:44:27 2017 -0400", "author": "btopro btopro@outlook.com"},
 {"refs": "", "commit": "58c41e9", "tree": "49bbff2", "parent": "d16661a", "subject": "testing", "date": "Mon Jun 12 16:12:57 2017 -0400", "author": "heyMP mgp140@gmail.com"},
 {"refs": " (testing)", "commit": "96c217d", "tree": "6fa8a4b", "parent": "58c41e9", "subject": "More test files.", "date": "Tue Jun 13 11:47:48 2017 -0400", "author": "heyMP mgp140@gmail.com"}
     ]
