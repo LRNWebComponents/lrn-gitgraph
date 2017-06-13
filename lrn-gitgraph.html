@@ -19,11 +19,6 @@ A LRN element
       }
     </style>
     <canvas id="gitGraph"></canvas>
-    <iron-ajax
-       auto
-       url="/demo/api.json"
-       handle-as="json"
-       on-response="handleResponse"></iron-ajax>
   </template>
   <script>
     Polymer({
@@ -55,89 +50,134 @@ A LRN element
           type: Object
         }
       },
-      handleResponse: function(res) {
-        var root = this;
-        var response = res.detail.response.data;
-        if (response) {
-          root.commits = response;
-        }
-      },
       observers: [
         '_commitsChanged(commits)'
       ],
-      _commitsChanged: function(logcommits) {
+      _commitsChanged: function(commits) {
         var root = this;
         if (root.config) {
-          if (logcommits.length > 0) {
+          if (commits.length > 0) {
             var gitgraph = new GitGraph(root.config);
-            logcommits.forEach(function(logcommit, i) {
-              var commitObj = {
-                message: logcommit.subject,
-                sha1: logcommit.commit,
-                tag: logcommit.refs
-              };
-              // if this is the first commit create the master branch
-              if (i === 0) {
-                var master = gitgraph.branch('master');
-                master.commit(commitObj);
-              }
-              else {
-                if (logcommit.parent !== '') {
-                  var parentCommit = root._getCommit(logcommit.parent, gitgraph.commits);
-                  var branch = parentCommit.branch;
-                  var hasChild = root._commitHasChild(logcommit.parent, logcommits);
-                  if (hasChild) {
-                    var newbranch = branch.branch(logcommit.commit);
-                    newbranch.commit(commitObj);
-                  }
-                  else {
-                    branch.commit(commitObj);
-                  }
-                }
+            var tree = [];
+            commits.forEach(function(item) {
+              if (item.commits) {
+                item.commits.forEach(function(commit) {
+                  commit['branch'] = item.branch;
+                  tree.push(commit);
+                });
               }
             });
+            // remove duplicate commits
+            tree = root._treeRemoveDuplicates(tree);
+            console.log('tree', tree);
+            // // sort by date
+            // tree.sort(function(a,b) {
+            //   return new Date(b.date) - new Date(a.date);
+            // });
+            // // reverse the tree
+            // tree = tree.reverse();
+            // identify forks
+            // const forks = root._getTreeForks(tree);
+            // console.log('forks', forks);
+            // // create the commits with gitgraph
+            // tree.forEach(function(item, i) {
+            //   // first we need to decide what branch we need to make
+            //   // the commits on. if it's the first item then we know it's
+            //   // on the "master" branch.
+            //   if (i === 0) {
+            //     gitgraph.branch(item.branch);
+            //   }
+            //   else {
+            //     // if the current branch is different than the one before it
+            //     // and the commits are different then we know we have a branch
+            //     if (item.branch !== tree[i - 1]. branch) {
+            //       if (item.commit !== tree[i - 1].commit) {
+            //         // check to see if the branch exists in gitgraph already
+            //         var branchExists = false;
+            //         gitgraph.branches.forEach(function(b) {
+            //           if (b.name === item.name) {
+            //             branchExists = true;
+            //           }
+            //         })
+            //         // if the branch does not exist then we need to create it fork it
+            //         // from the previous branch
+            //         if (!branchExists) {
+            //           var prevBranch = gitgraph.checkout(tree[i - 1].branch);
+            //           var branch = prevBranch
+            //         }
+            //       }
+            //     }
+            //   }
+            // });
+            // tree.forEach(function(item) {
+            //   if (createdBranches.indexOf(item.branch) < 0) {
+            //     createdBranches.push(item.branch);
+            //   }
+            //   var branch = gitgraph.branch(item.branch);
+            //   branch.commit({
+            //     sha1: item.commit,
+            //     message: item.subject
+            //   });
+            // });
+            // console.log(createdBranches);
+            // branches = []
+            // branches['master'] = gitgraph.branch('master');
+            // branches['master'].commit();
+            // branches['master'].commit();
+            // branches['develop'] = gitgraph.branch('develop');
+            // branches['develop'].commit();
+            // branches['master'].commit();
           }
         }
       },
-      _getCommit: function(commitId, commits) {
-        var commit = false;
-        commits.forEach(function(c) {
-          if (c.sha1 === commitId) {
-            commit = c;
+      _getTreeForks: function(tree) {
+        var forks = [];
+        var root = this;
+        var existingParents = [];
+        var existingCommits = [];
+        tree.forEach(function(item) {
+          if (existingCommits.includes(item.commit)) {
+            return;
           }
+          if (existingParents.includes(item.parent)) {
+            if (typeof forks[item.parent] === 'undefined') {
+              forks[item.parent] = [];
+            }
+            forks[item.parent] = [item];
+          }
+          existingParents.push(item.parent);
+          existingCommits.push(item.commit);
         });
-        return commit;
+        return forks;
       },
-      _commitHasChild: function(commitId, commits) {
-        var hasChild = false;
-        var track = [];
-        commits.forEach(function(c, i) {
-          track[c.parent] = 0;
-        });
-        commits.forEach(function(c, i) {
-          track[c.parent]++;
-        });
-        commits.forEach(function(c, i) {
-          if (c.parent === commitId && track[c.parent] > 1) {
-            hasChild = true;
+      _treeRemoveDuplicates: function(tree) {
+        var htTree = [];
+        var htCommits = [];
+        tree.forEach(function(t) {
+          if (!htCommits.includes(t.commit)) {
+            htTree.push(t);
+            htCommits.push(t.commit);
           }
         });
-        return hasChild;
+        return htTree;
+      },
+      _uniqueArray: function(array) {
+        var seen = {};
+        return array.filter(function(item) {
+            return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+        });
       },
       ready: function() {
         var root = this;
-        /***********************
-         *    INITIALIZATION   *
-         ***********************/
         var config = {
           template: root.template, // could be: "blackarrow" or "metro" or `myTemplate` (custom Template object)
           reverseArrow: false, // to make arrows point to ancestors, if displayed
           orientation: root.orientation,
           element: root.$$('#gitGraph')
         };
-        // if (root.mode !== '') {
-        //   config.mode = root.mode;
-        // }
+        if (root.mode !== '') {
+          config.mode = root.mode;
+        }
         root.config = config;
       }
     });
