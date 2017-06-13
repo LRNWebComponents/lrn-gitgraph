@@ -21,8 +21,14 @@
     <div class="vertical-section-container centered">
       <h3>Basic lrn-gitgraph demo</h3>
       <demo-snippet>
-        <template>
-          <lrn-gitgraph></lrn-gitgraph>
+        <template is="dom-bind">
+          <iron-ajax
+            auto
+            url="api.json"
+            handle-as="json"
+            last-response="{{response}}">
+          </iron-ajax>
+          <lrn-gitgraph commits="[[response]]"></lrn-gitgraph>
         </template>
       </demo-snippet>
     </div>

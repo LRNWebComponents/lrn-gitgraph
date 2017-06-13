@@ -68,16 +68,32 @@ A LRN element
               }
             });
             // remove duplicate commits
+            console.log('befor', tree);
             tree = root._treeRemoveDuplicates(tree);
+            // sort by date
+            tree = tree.sort(function(a,b) {
+              return new Date(b.date) - new Date(a.date);
+            });
+            tree.reverse();
             console.log('tree', tree);
-            // // sort by date
-            // tree.sort(function(a,b) {
-            //   return new Date(b.date) - new Date(a.date);
-            // });
+            // identify forks
+            const forks = root._getTreeForks(tree);
+            console.log('forks', forks);
+            // we need to keep track of branches
+            var branches = [];
+            tree.forEach(function(item, i) {
+              // if the branch doesn't exist create it
+              if (typeof branches[item.branch] === 'undefined') {
+                branches[item.branch] = gitgraph.branch(item.branch);
+              }
+              // make the commit
+              branches[item.branch].commit({
+                sha1: item.commit,
+                message: item.subject
+              });
+            });
             // // reverse the tree
             // tree = tree.reverse();
-            // identify forks
-            // const forks = root._getTreeForks(tree);
             // console.log('forks', forks);
             // // create the commits with gitgraph
             // tree.forEach(function(item, i) {
@@ -134,11 +150,7 @@ A LRN element
         var forks = [];
         var root = this;
         var existingParents = [];
-        var existingCommits = [];
         tree.forEach(function(item) {
-          if (existingCommits.includes(item.commit)) {
-            return;
-          }
           if (existingParents.includes(item.parent)) {
             if (typeof forks[item.parent] === 'undefined') {
               forks[item.parent] = [];
@@ -146,7 +158,6 @@ A LRN element
             forks[item.parent] = [item];
           }
           existingParents.push(item.parent);
-          existingCommits.push(item.commit);
         });
         return forks;
       },
