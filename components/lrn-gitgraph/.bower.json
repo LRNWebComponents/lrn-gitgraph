@@ -1,0 +1,29 @@
+{
+  "name": "lrn-gitgraph",
+  "description": "A LRN element",
+  "main": "lrn-gitgraph.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.4.0",
+    "lrnsys-behaviors": "LRNWebComponents/lrnsys-behaviors#^1.0.0",
+    "hax-behaviors": "LRNWebComponents/hax-behaviors#^0.0.6",
+    "materializecss-styles": "LRNWebComponents/materializecss-styles#^0.0.5",
+    "gitgraph.js": "^1.11.2"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "homepage": "https://github.com/LRNWebComponents/lrn-gitgraph",
+  "_release": "b49acdc45b",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "b49acdc45b00601b6c7e6fb16ad2d9d4a08ed036"
+  },
+  "_source": "https://github.com/LRNWebComponents/lrn-gitgraph.git",
+  "_target": "master",
+  "_originalSource": "LRNWebComponents/lrn-gitgraph",
+  "_direct": true
+}
