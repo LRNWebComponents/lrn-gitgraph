@@ -16,7 +16,8 @@
 {"refs": "", "commit": "ca3fc41", "tree": "5166fee", "parent": "8b80eb8", "subject": "ALMOST THERE", "date": "Thu Jun 8 15:43:33 2017 -0400"},
 {"refs": "", "commit": "3d460b7", "tree": "8a2b148", "parent": "ca3fc41 c0c97f2", "subject": "updated", "date": "Thu Jun 8 15:44:01 2017 -0400"},
 {"refs": " (origin/master)", "commit": "d16661a", "tree": "5166fee", "parent": "3d460b7", "subject": "almost there", "date": "Thu Jun 8 15:44:27 2017 -0400"},
-{"refs": " (HEAD -> master)", "commit": "4963a91", "tree": "8ba28f7", "parent": "d16661a", "subject": "getting somewhere", "date": "Tue Jun 13 11:21:10 2017 -0400"}
+{"refs": "", "commit": "4963a91", "tree": "8ba28f7", "parent": "d16661a", "subject": "getting somewhere", "date": "Tue Jun 13 11:21:10 2017 -0400"},
+{"refs": " (HEAD -> master)", "commit": "41776ef", "tree": "dda3209", "parent": "4963a91", "subject": "closer...", "date": "Tue Jun 13 11:46:16 2017 -0400"}
     ]
   },
   {
