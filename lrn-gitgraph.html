@@ -7,6 +7,11 @@
 `lrn-gitgraph`
 A LRN element
 
+For each branch in your repo use the following git command:
+```
+git log [branch_name] --format='{"refs": "%d", "commit": "%h", "tree": "%t", "parent": "%p", "subject": "%s", "date": "%cd", "author": "%an %ae"},' --reverse
+```
+
 @demo demo/index.html
 -->
 
@@ -26,6 +31,10 @@ A LRN element
       is: 'lrn-gitgraph',
 
       properties: {
+        commits: {
+          type: Array,
+          value: []
+        },
         template: {
           type: String,
           value: 'blackarrow',
@@ -42,10 +51,9 @@ A LRN element
           type: Boolean,
           value: false,
         },
-        commits: {
-          type: Array,
-          value: []
-        },
+        /**
+         * @type {{template: String, reverseArrow: Boolean, orientation: String, element: Object}}
+         */
         config: {
           type: Object
         }
@@ -74,12 +82,9 @@ A LRN element
             tree = tree.sort(function(a,b) {
               return new Date(b.date) - new Date(a.date);
             });
+            // reverse the tree so the newest oldest is first
             tree.reverse();
-            console.log('tree', tree);
             // identify forks
-            const forks = root._getTreeForks(tree);
-            console.log('forks', forks);
-            // we need to keep track of branches
             var branches = [];
             tree.forEach(function(item, i) {
               // if the branch doesn't exist create it
@@ -89,77 +94,13 @@ A LRN element
               // make the commit
               branches[item.branch].commit({
                 sha1: item.commit,
-                message: item.subject
+                message: item.subject,
+                author: item.author,
+                tag: item.refs
               });
             });
-            // // reverse the tree
-            // tree = tree.reverse();
-            // console.log('forks', forks);
-            // // create the commits with gitgraph
-            // tree.forEach(function(item, i) {
-            //   // first we need to decide what branch we need to make
-            //   // the commits on. if it's the first item then we know it's
-            //   // on the "master" branch.
-            //   if (i === 0) {
-            //     gitgraph.branch(item.branch);
-            //   }
-            //   else {
-            //     // if the current branch is different than the one before it
-            //     // and the commits are different then we know we have a branch
-            //     if (item.branch !== tree[i - 1]. branch) {
-            //       if (item.commit !== tree[i - 1].commit) {
-            //         // check to see if the branch exists in gitgraph already
-            //         var branchExists = false;
-            //         gitgraph.branches.forEach(function(b) {
-            //           if (b.name === item.name) {
-            //             branchExists = true;
-            //           }
-            //         })
-            //         // if the branch does not exist then we need to create it fork it
-            //         // from the previous branch
-            //         if (!branchExists) {
-            //           var prevBranch = gitgraph.checkout(tree[i - 1].branch);
-            //           var branch = prevBranch
-            //         }
-            //       }
-            //     }
-            //   }
-            // });
-            // tree.forEach(function(item) {
-            //   if (createdBranches.indexOf(item.branch) < 0) {
-            //     createdBranches.push(item.branch);
-            //   }
-            //   var branch = gitgraph.branch(item.branch);
-            //   branch.commit({
-            //     sha1: item.commit,
-            //     message: item.subject
-            //   });
-            // });
-            // console.log(createdBranches);
-            // branches = []
-            // branches['master'] = gitgraph.branch('master');
-            // branches['master'].commit();
-            // branches['master'].commit();
-            // branches['develop'] = gitgraph.branch('develop');
-            // branches['develop'].commit();
-            // branches['master'].commit();
           }
         }
-      },
-      _getTreeForks: function(tree) {
-        var forks = [];
-        var root = this;
-        var existingParents = [];
-        tree.forEach(function(item) {
-          if (existingParents.includes(item.parent)) {
-            if (typeof forks[item.parent] === 'undefined') {
-              forks[item.parent] = [];
-            }
-            forks[item.parent] = [item];
-          }
-          existingParents.push(item.parent);
-        });
-        return forks;
       },
       _treeRemoveDuplicates: function(tree) {
         var htTree = [];
@@ -171,12 +112,6 @@ A LRN element
           }
         });
         return htTree;
-      },
-      _uniqueArray: function(array) {
-        var seen = {};
-        return array.filter(function(item) {
-            return seen.hasOwnProperty(item) ? false : (seen[item] = true);
-        });
       },
       ready: function() {
         var root = this;
